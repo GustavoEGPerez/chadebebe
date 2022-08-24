@@ -1,0 +1,31 @@
+{% extends './base.html' %}
+{% block content %}
+  {% if request.user.is_authenticated %}
+    <h1>Lista de presentes</h1>
+    {% if presentes_list %}
+      <table class="table">
+        <tr>
+          <th scope="col">Nome</th>
+          <th scope="col">Qtde</th>
+          <th scope="col">Obrigatório?</th>
+          <th scole="col">Imagem</th>
+        </tr>
+        {% for presente in presentes_list %}
+          <tr>
+            <td>
+              <a href="/app/presentes/{{ presente.id }}">{{ presente.nome }}</a>
+            </td>
+            <td>{{ presente.quantidade }}</td>
+            <td>{{ presente.obrigatorio }}</td>
+            <td>
+              <img src="{{ presente.url_imagem }}" style="height:60px;max-width: 70px;" />
+            </td>
+          </tr>
+        {% endfor %}
+      </table>
+    {% else %}
+      <p>Não existem presentes cadastrados.</p>
+    {% endif %}
+    <a href="/app/presentes/new">Cadastrar novo presente</a>
+  {% endif %}
+{% endblock %}

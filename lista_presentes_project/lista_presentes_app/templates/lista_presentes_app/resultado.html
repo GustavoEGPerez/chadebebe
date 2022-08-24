@@ -1,0 +1,86 @@
+{% extends './base.html' %}
+{% block content %}
+  <style type="text/css">
+    .card {
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15), 0 2px 5px rgba(0, 0, 0, 0.2);
+      -webkit-transition: all 0.5s ease;
+      -moz-transition: all 0.5s ease;
+      -o-transition: all 0.5s ease;
+      transition: all 0.5s ease;
+      cursor: pointer;
+    }
+    .card.active {
+      border-color: #28a745 !important;
+      background-color: #f2f2f2;
+      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.18), 0 3px 6px rgba(0, 0, 0, 0.23);
+    }
+
+    .inactive h3, .inactive h6 {
+      color: lightgrey
+    }
+
+    .completed h3, .completed h6 {
+      color: green
+    }
+  </style>
+  <h1>Resultados</h1>
+  {% csrf_token %}
+  {% if data.obrigatorios %}
+    <fieldset id="obrigatorios">
+      <h2 class="m-3 mt-5">Fraldas</h2>
+      <div class="container">
+        <div class="row mt-2">
+          <div class="col-12">
+            <div class="form-group row">
+              <div class="col-12">
+                <div class="card-deck">
+                  {% for presente in data.obrigatorios %}
+                    <div id="radio-{{ presente.id }}-card" class="card mb-4{%if presente.qtde_selecionada is None %} inactive{%endif%}{%if presente.qtde_selecionada >= presente.quantidade %} completed{%endif%}" key="{{ presente.id }}">
+                      <div class="card-body" role="button">
+                        <h6 class="card-title">
+                          <label for="radio-{{ presente.id }}">{{ presente.nome }}</label>
+                        </h6>
+                        <p class="card-text">
+                          <img src="{{ presente.url_imagem }}" style="height:100px" />
+                          <h3><b>{%if presente.qtde_selecionada is None%}{{0}}{%else%}{{presente.qtde_selecionada}}{%endif%}/{{presente.quantidade}}</b></h3>
+                        </p>
+                      </div>
+                    </div>
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </fieldset>
+  {% endif %}
+  {% if data.opcionais %}
+    <fieldset id="opcionais">
+      <h2 class="m-3 mt-5">Outros presentes</h2>
+      <div class="container">
+        <div class="row mt-2">
+          <div class="col-12">
+            <div class="form-group row">
+              {% for presente in data.opcionais %}
+                <div class="col-xs-12 col-sm-6 col-md-3{%if presente.qtde_selecionada is None %} inactive{%endif%}{%if presente.qtde_selecionada >= presente.quantidade %} completed{%endif%}">
+                  <div id="radio-{{ presente.id }}-card" class="card mb-4" key="{{ presente.id }}">
+                    <div class="card-body" role="button">
+                      <h6 class="card-title">
+                          <label for="radio-{{ presente.id }}">{{ presente.nome }}</label>
+                      </h6>
+                      <p class="card-text" style="text-align: center;">
+                        <img src="{{ presente.url_imagem }}" style="height:100px;margin-left:auto;margin-right:auto" />
+                        <h3><b>{%if presente.qtde_selecionada is None%}{{0}}{%else%}{{presente.qtde_selecionada}}{%endif%}/{{presente.quantidade}}</b></h3>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </fieldset>
+  {% endif %}
+{% endblock %}

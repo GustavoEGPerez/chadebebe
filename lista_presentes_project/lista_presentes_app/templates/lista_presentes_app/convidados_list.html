@@ -1,0 +1,28 @@
+{% extends './base.html' %}
+{% block content %}
+  {% if request.user.is_authenticated %}
+    <h1>Lista de convidados</h1>
+    {% if convidados_list %}
+      <table class="table">
+        <tr>
+          <th scope="col">Nome</th>
+          <th scope="col">E-mail</th>
+          <th scope="col">Telefone</th>
+        </tr>
+
+        {% for convidado in convidados_list %}
+          <tr>
+            <td>
+              <a href="/app/convidados/{{ convidado.id }}">{{ convidado.nome }}</a>
+            </td>
+            <td>{{ convidado.email }}</td>
+            <td>{{ convidado.telefone }}</td>
+          </tr>
+        {% endfor %}
+      </table>
+    {% else %}
+      <p>Não existem convidados cadastrados.</p>
+    {% endif %}
+    <a href="/app/convidados/new">Cadastrar novo convidado</a>
+  {% endif %}
+{% endblock %}

@@ -1,0 +1,188 @@
+{% extends './base.html' %}
+{% block content %}
+  <h1>Lista de presentes</h1>
+  {% if request.session.convidado %}
+    <style type="text/css">
+      .card {
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15), 0 2px 5px rgba(0, 0, 0, 0.2);
+        -webkit-transition: all 0.5s ease;
+        -moz-transition: all 0.5s ease;
+        -o-transition: all 0.5s ease;
+        transition: all 0.5s ease;
+        cursor: pointer;
+      }
+      .card.active {
+        border-color: #28a745 !important;
+        background-color: #f2f2f2;
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.18), 0 3px 6px rgba(0, 0, 0, 0.23);
+      }
+    </style>
+    <h5>
+      Olá,{% if request.session.convidado %}
+        {{ request.session.convidado.nome }}{% elif request.user.is_authenticated %}{{ request.user.first_name }}
+      {% endif %}
+    </h5>
+    <form id="save_selection" method="post" action="/app/save_selection">
+      {% csrf_token %}
+      {% if data.obrigatorios %}
+        <fieldset id="obrigatorios">
+          <h2 class="m-3 mt-5">Fraldas</h2>
+          <p>Escolha a fralda que irá levar para o chá de bebê</p>
+
+          <div class="container">
+            <div class="row mt-2">
+              <div class="col-12">
+                <div class="form-group row">
+                  <div class="col-12">
+                    <div class="card-deck">
+                      {% for presente in data.obrigatorios %}
+                        <div id="radio-{{ presente.id }}-card" class="card mb-4" key="{{ presente.id }}">
+                          <div class="card-body" role="button">
+                            <h6 class="card-title">
+                              {% comment %} <input id="radio-{{ presente.id }}" type="radio" name="obrigatorio" value="{{ presente.id }}" /> {% endcomment %}
+                              <label for="radio-{{ presente.id }}">{{ presente.nome }}</label>
+                            </h6>
+                            <p class="card-text">
+                              <img src="{{ presente.url_imagem }}" style="height:100px" />
+                            </p>
+                          </div>
+                        </div>
+                      {% endfor %}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </fieldset>
+      {% endif %}
+      {% if data.opcionais %}
+        <fieldset id="opcionais">
+          <h2 class="m-3 mt-5">Outros presentes</h2>
+          <p>Se preferir, você também pode optar por presentear o Téo com mais alguma coisa (não é obrigatório). Selecione o presente que pretende trazer:</p>
+
+          <div class="container">
+            <div class="row mt-2">
+              <div class="col-12">
+                <div class="form-group row">
+                  {% for presente in data.opcionais %}
+                    <div class="col-xs-12 col-sm-6 col-md-3">
+                      <div id="radio-{{ presente.id }}-card" class="card mb-4" key="{{ presente.id }}">
+                        <div class="card-body" role="button">
+                          <h6 class="card-title">
+                            {% comment %} <div style="float:left;width:20px">
+                              <input id="radio-{{ presente.id }}" type="radio" name="opcional" value="{{ presente.id }}" />
+                            </div> {% endcomment %}
+                            {% comment %} <div style="float:left;width:85%">
+                              {% endcomment %}
+                              <label for="radio-{{ presente.id }}">{{ presente.nome }}</label>
+                              {% comment %}
+                            </div> {% endcomment %}
+                          </h6>
+                          <p class="card-text" style="text-align: center;">
+                            <img src="{{ presente.url_imagem }}" style="height:100px;margin-left:auto;margin-right:auto" />
+                            <a class="mt-2 btn btn-secondary btn-sm" href="{{ presente.url_anuncio }}" target="_blank" name="sugestao">Veja uma sugestão de compra</a>
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+          </div>
+        </fieldset>
+      {% endif %}
+      <input type="hidden" name="obrigatorio" id="obrigatorio" value="" />
+      <input type="hidden" name="opcional" id="opcional" value="" />
+    </form>
+    <hr />
+    <div>
+      <h5 class="card-title">Resumo</h5>
+      <p class="card-text">
+        Fralda&nbsp;<span style="color:red">*</span>:&nbsp;<span id="resultado_fralda">(não selecionado)</span><br />
+        Outro Presente:&nbsp;<span id="resultado_presente">(não selecionado)</span>
+      </p>
+    </div>
+    <hr />
+    <div class="alert alert-danger" role="alert" id="alert" style="display:none"></div>
+    <button type="button" class="btn btn-primary btn-lg" style="width:100%" onclick="salvar_escolha()">Salvar Escolha</button>
+
+    <script type="text/javascript" language="javascript">
+      $(document).ready(function () {
+        $('.card').click(function (e) {
+          if ($(e.target).attr('name') == 'sugestao') return
+          var curCard = null
+          if ($(this).hasClass('card')) curCard = $(this)
+          else curCard = $(this).closest('.card')
+          removeActive(curCard)
+          makeActive(curCard)
+          if (curCard.closest('fieldset').prop('id') == 'obrigatorios') {
+            $('#obrigatorio').val(curCard.attr('key'))
+            $('#resultado_fralda').text(curCard.find('label').text())
+            if ($('#obrigatorio').val() != '') $('#alert').hide()
+          } else if (curCard.closest('fieldset').prop('id') == 'opcionais') {
+            $('#opcional').val(curCard.attr('key'))
+            $('#resultado_presente').text(curCard.find('label').text())
+          }
+      
+          submit_data()
+        })
+      })
+      
+      function salvar_escolha() {
+        if ($('#obrigatorio').val() == '') {
+          $('#alert').text('O tamanho da fralda ainda não foi selecionado')
+          $('#alert').show()
+        } else {
+          $('#alert').hide()
+          window.open('/app/obrigado', '_self')
+        }
+      }
+      
+      function submit_data() {
+        return $('#save_selection').submit()
+      }
+      
+      function removeActive(card) {
+        $(card).closest('fieldset').find('.card').removeClass('active')
+      }
+      
+      function makeActive(card) {
+        $(card).addClass('active')
+      }
+      
+      function getFormData($form) {
+        var unindexed_array = $form.serializeArray()
+        var indexed_array = {}
+      
+        $.map(unindexed_array, function (n, i) {
+          indexed_array[n['name']] = n['value']
+        })
+      
+        return indexed_array
+      }
+      
+      $('#save_selection').on('submit', function (e) {
+        e.preventDefault()
+        console.log('teste')
+        var serializedData = getFormData($(this))
+        console.info(serializedData)
+        $.ajax({
+          type: 'POST',
+          url: '/app/save_selection',
+          data: serializedData,
+          success: function (response) {
+            console.info('informações salvas com sucesso!')
+          },
+          error: function (response) {
+            console.error(response['responseJSON']['error'])
+          }
+        })
+        return false
+      })
+    </script>
+  {% else %}
+  <div class="alert alert-danger" role="alert" id="alert">Convidado não foi identificado, <a href="/app" target="_self">clique aqui</a> para se identificar antes de prosseguir</div>
+  {% endif %}
+{% endblock %}
