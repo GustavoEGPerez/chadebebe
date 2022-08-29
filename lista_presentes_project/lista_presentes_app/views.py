@@ -95,14 +95,14 @@ class PresenteListView(generic.ListView):
 class PresenteCreateView(generic.CreateView):
     model = Presentes
     fields = ('nome', 'quantidade', 'obrigatorio', 'url_imagem', 'url_anuncio')
-    success_url = "/app/presentes"
+    success_url = "/presentes"
     
 class PresenteUpdateView(generic.UpdateView):
     model = Presentes
     slug_url_kwarg = 'presente_slug'
     slug_field = 'id'
     fields =('nome', 'quantidade', 'obrigatorio', 'url_imagem', 'url_anuncio')
-    success_url = "/app/presentes"
+    success_url = "/presentes"
     
     
 class ConvidadoListView(generic.ListView):
@@ -111,14 +111,14 @@ class ConvidadoListView(generic.ListView):
 class ConvidadoCreateView(generic.CreateView):
     model = Convidados
     fields = ('nome', 'email', 'telefone')
-    success_url = "/app/convidados"
+    success_url = "/convidados"
     
 class ConvidadoUpdateView(generic.UpdateView):
     model = Convidados
     slug_url_kwarg = 'convidado_slug'
     slug_field = 'id'
     fields =('nome', 'email', 'telefone')
-    success_url = "/app/convidados"
+    success_url = "/convidados"
     
 class ResultadoView(generic.ListView):
     context_object_name = "data"
@@ -142,7 +142,7 @@ def login_user(request):
         if user is not None:
             if user.is_active:
                 login(request, user)
-                return HttpResponseRedirect('/app')
+                return HttpResponseRedirect('/')
             else:
                 messages.error(request, "Usuário inválido" )
         else:

@@ -10,28 +10,29 @@
     <meta name="description" content="" />
     <meta name="author" content="" />
     <meta name="csrf_token" content="{{ csrf_token }}" />
+    <title>Chá do Téo</title>
   </head>
 
   <body>
     <nav class="navbar navbar-expand-xl navbar-light bg-light">
-      <a href="/app" class="navbar-brand"><i class="fa fa-cube"></i>Chá de Bebê do&nbsp;<b>Téo</b></a>
+      <a href="/" class="navbar-brand"><i class="fa fa-cube"></i>Chá de Bebê do&nbsp;<b>Téo</b></a>
       <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse"><span class="navbar-toggler-icon"></span></button>
       <!-- Collection of nav links, forms, and other content for toggling -->
       <div id="navbarCollapse" class="collapse navbar-collapse justify-content-start">
         <div class="navbar-nav">
           {% if request.user.is_authenticated %}
-            <a href="/app/convidados" class="nav-item nav-link active">Convidados</a>
-            <a href="/app/presentes" class="nav-item nav-link">Presentes</a>
-            <a href="/app/resultado" class="nav-item nav-link">Resultado</a>
+            <a href="/convidados" class="nav-item nav-link active">Convidados</a>
+            <a href="/presentes" class="nav-item nav-link">Presentes</a>
+            <a href="/resultado" class="nav-item nav-link">Resultado</a>
           {% endif %}
           {% if request.user.is_authenticated or request.session.convidado %}
-            <a href="/app/opcoes" class="nav-item nav-link">Seleção</a>
+            <a href="/opcoes" class="nav-item nav-link">Seleção</a>
           {% endif %}
         </div>
         <div class="navbar-nav ml-auto">
           <div class="nav-item dropdown">
             {% if request.session.convidado or request.user.is_authenticated %}
-              <a href="/app" data-toggle="dropdown" class="nav-link dropdown-toggle user-action" aria-expanded="false">
+              <a href="/" data-toggle="dropdown" class="nav-link dropdown-toggle user-action" aria-expanded="false">
                 {% if request.session.convidado %}
                   {{ request.session.convidado.nome }}
                   {% elif request.user.is_authenticated %}
@@ -40,7 +41,7 @@
                 <b class="caret"></b>
               </a>
               <div class="dropdown-menu">
-                <form method="POST" action="/app/logoff" id="logoff">
+                <form method="POST" action="/logoff" id="logoff">
                   <a href="#" class="dropdown-item" onclick="$('#logoff').submit()"><i class="fa fa-sign-out" aria-hidden="true"></i> Sair</a>
                 </form>
               </div>

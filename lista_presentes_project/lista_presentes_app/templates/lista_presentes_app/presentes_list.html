@@ -13,7 +13,7 @@
         {% for presente in presentes_list %}
           <tr>
             <td>
-              <a href="/app/presentes/{{ presente.id }}">{{ presente.nome }}</a>
+              <a href="/presentes/{{ presente.id }}">{{ presente.nome }}</a>
             </td>
             <td>{{ presente.quantidade }}</td>
             <td>{{ presente.obrigatorio }}</td>
@@ -26,6 +26,6 @@
     {% else %}
       <p>Não existem presentes cadastrados.</p>
     {% endif %}
-    <a href="/app/presentes/new">Cadastrar novo presente</a>
+    <a href="/presentes/new">Cadastrar novo presente</a>
   {% endif %}
 {% endblock %}

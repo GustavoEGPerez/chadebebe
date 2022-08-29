@@ -1,0 +1,13 @@
+version: "3.9"
+   
+services:
+  sorteio-equipes-web:
+    build: .
+    command: python manage.py runserver 0.0.0.0:3013
+    volumes:
+      - .:/code
+    ports:
+      - "3013:3013"
+    network_mode: bridge
+    extra_hosts:
+      - "host.docker.internal:host-gateway"

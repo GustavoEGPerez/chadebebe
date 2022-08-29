@@ -13,7 +13,7 @@
         {% for convidado in convidados_list %}
           <tr>
             <td>
-              <a href="/app/convidados/{{ convidado.id }}">{{ convidado.nome }}</a>
+              <a href="/convidados/{{ convidado.id }}">{{ convidado.nome }}</a>
             </td>
             <td>{{ convidado.email }}</td>
             <td>{{ convidado.telefone }}</td>
@@ -23,6 +23,6 @@
     {% else %}
       <p>Não existem convidados cadastrados.</p>
     {% endif %}
-    <a href="/app/convidados/new">Cadastrar novo convidado</a>
+    <a href="/convidados/new">Cadastrar novo convidado</a>
   {% endif %}
 {% endblock %}

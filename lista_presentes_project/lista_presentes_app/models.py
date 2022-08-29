@@ -35,6 +35,7 @@ class VwResultadosProdutos(models.Model):
     obrigatorio = models.BooleanField()
     quantidade = models.IntegerField()
     url_imagem = models.TextField(max_length=512, blank=True, null=True)
+    url_anuncio = models.TextField(max_length=512, blank=True, null=True)
     qtde_convidados = models.IntegerField()
     qtde_selecionada = models.IntegerField()
     qtde_restante = models.IntegerField()

@@ -10,6 +10,7 @@
         -o-transition: all 0.5s ease;
         transition: all 0.5s ease;
         cursor: pointer;
+        height: 270px;
       }
       .card.active {
         border-color: #28a745 !important;
@@ -22,7 +23,7 @@
         {{ request.session.convidado.nome }}{% elif request.user.is_authenticated %}{{ request.user.first_name }}
       {% endif %}
     </h5>
-    <form id="save_selection" method="post" action="/app/save_selection">
+    <form id="save_selection" method="post" action="/save_selection">
       {% csrf_token %}
       {% if data.obrigatorios %}
         <fieldset id="obrigatorios">
@@ -36,14 +37,11 @@
                   <div class="col-12">
                     <div class="card-deck">
                       {% for presente in data.obrigatorios %}
-                        <div id="radio-{{ presente.id }}-card" class="card mb-4" key="{{ presente.id }}">
+                        <div id="radio-{{ presente.id }}-card" class="card mb-4" key="{{ presente.id }}" style="height: 210px">
                           <div class="card-body" role="button">
-                            <h6 class="card-title">
-                              {% comment %} <input id="radio-{{ presente.id }}" type="radio" name="obrigatorio" value="{{ presente.id }}" /> {% endcomment %}
-                              <label for="radio-{{ presente.id }}">{{ presente.nome }}</label>
-                            </h6>
-                            <p class="card-text">
-                              <img src="{{ presente.url_imagem }}" style="height:100px" />
+                            <h6 class="card-title"><label for="radio-{{ presente.id }}">{{ presente.nome }}</label></h6>
+                            <p class="card-text" style="text-align: center;">
+                              <img src="{{ presente.url_imagem }}" style="height:100px;margin-left:auto;margin-right:auto" />
                             </p>
                           </div>
                         </div>
@@ -66,30 +64,30 @@
               <div class="col-12">
                 <div class="form-group row">
                   {% for presente in data.opcionais %}
-                    <div class="col-xs-12 col-sm-6 col-md-3">
-                      <div id="radio-{{ presente.id }}-card" class="card mb-4" key="{{ presente.id }}">
-                        <div class="card-body" role="button">
-                          <h6 class="card-title">
-                            {% comment %} <div style="float:left;width:20px">
-                              <input id="radio-{{ presente.id }}" type="radio" name="opcional" value="{{ presente.id }}" />
-                            </div> {% endcomment %}
-                            {% comment %} <div style="float:left;width:85%">
-                              {% endcomment %}
-                              <label for="radio-{{ presente.id }}">{{ presente.nome }}</label>
-                              {% comment %}
-                            </div> {% endcomment %}
-                          </h6>
-                          <p class="card-text" style="text-align: center;">
-                            <img src="{{ presente.url_imagem }}" style="height:100px;margin-left:auto;margin-right:auto" />
-                            <a class="mt-2 btn btn-secondary btn-sm" href="{{ presente.url_anuncio }}" target="_blank" name="sugestao">Veja uma sugestão de compra</a>
-                          </p>
+                    {% if presente.qtde_restante > 0 %}
+                      <div class="col-xs-12 col-sm-6 col-md-3">
+                        <div id="radio-{{ presente.id }}-card" class="card mb-4" key="{{ presente.id }}">
+                          <div class="card-body" role="button">
+                            <h6 class="card-title"><label for="radio-{{ presente.id }}">{{ presente.nome }}</label></h6>
+                            <div class="card-text" style="text-align: center;">
+                              <img src="{{ presente.url_imagem }}" style="height:100px;margin-left:auto;margin-right:auto;margin-bottom: 15px" />
+                              {% if presente.url_anuncio > '' %}
+                                <a class="mt-2 btn btn-secondary btn-sm" href="{{ presente.url_anuncio }}" target="_blank" name="sugestao">Veja uma sugestão</a>
+                              {% else %}
+                                <div style="text-align: center">
+                                  <small>(Qualquer marca/modelo)</small>
+                                </div>
+                              {% endif %}
+                            </div>
+                          </div>
                         </div>
                       </div>
-                    </div>
+                    {% endif %}
                   {% endfor %}
                 </div>
               </div>
             </div>
+            <div class="alert alert-info"><i>OBS: Conforme os presentes vão sendo escolhidos pelos convidados, eles vão sendo removidos desta lista</i></div>
           </div>
         </fieldset>
       {% endif %}
@@ -136,7 +134,7 @@
           $('#alert').show()
         } else {
           $('#alert').hide()
-          window.open('/app/obrigado', '_self')
+          window.open('/obrigado', '_self')
         }
       }
       
@@ -170,7 +168,7 @@
         console.info(serializedData)
         $.ajax({
           type: 'POST',
-          url: '/app/save_selection',
+          url: '/save_selection',
           data: serializedData,
           success: function (response) {
             console.info('informações salvas com sucesso!')
@@ -183,6 +181,8 @@
       })
     </script>
   {% else %}
-  <div class="alert alert-danger" role="alert" id="alert">Convidado não foi identificado, <a href="/app" target="_self">clique aqui</a> para se identificar antes de prosseguir</div>
+    <div class="alert alert-danger" role="alert" id="alert">
+      Convidado não foi identificado, <a href="/" target="_self">clique aqui</a> para se identificar antes de prosseguir
+    </div>
   {% endif %}
 {% endblock %}
