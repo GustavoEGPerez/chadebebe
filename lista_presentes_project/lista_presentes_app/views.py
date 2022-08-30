@@ -43,6 +43,10 @@ def obrigado(request):
     response = TemplateResponse(request, 'lista_presentes_app/obrigado.html', {})
     return response
 
+def convite(request):
+    response = TemplateResponse(request, 'lista_presentes_app/convite.html', {})
+    return response
+
 @csrf_exempt
 def logoff(request):
     if request.method == "POST":

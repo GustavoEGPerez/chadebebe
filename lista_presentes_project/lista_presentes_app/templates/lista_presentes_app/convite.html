@@ -1,0 +1,32 @@
+{% extends './base.html' %}
+{% load static %}
+{% block content %}
+{% if request.user.is_authenticated or request.session.convidado %}
+<div class="row">
+  <img src="{% static 'lista_presentes_app/convite.png' %}" style="width: 100%; max-width: 1500px; text-align:center" />
+</div>
+<div class="row m-3 p-2">
+  <div class="col-12">
+    <h3>Endereço</h3>
+    <p>Rua Francisco Redondo Garcia, 13, City Bussocaba, Osasco - SP, 06040-490</p>
+    <p> 
+      <a href="https://waze.com/ul/h6gy9zmq1r" target="_blank" class="m-3">
+        <img src="{% static 'lista_presentes_app/waze.png' %}" style="width: 80px; text-align:center" />
+      </a>
+      <a href="https://goo.gl/maps/G23qPTWZZjExtjhA7" target="_blank" class="m-3">
+        <img src="{% static 'lista_presentes_app/google_maps.png' %}" style="width: 80px; text-align:center" />
+      </a>
+    </p>
+  </div>
+</div>
+<div class="row m-3 p-2">
+  <div class="col-12">
+    <h3>Contato</h3>
+    <p>Camilla: (11) 98693-2305 - <a href="mailto: camilla.xavier@hotmail.com">camilla.xavier@hotmail.com</a></p>
+    <p>Gustavo: (11) 97195-1567 - <a href="mailto: sasquat@gmail.com">sasquat@gmail.com</a></p>
+  </div>
+</div>
+{% else %}
+<script>window.open('/', '_self')</script>
+{% endif %}
+{% endblock %}

@@ -15,5 +15,6 @@ urlpatterns = [
     path('convidados/new', views.ConvidadoCreateView.as_view(), name='convidados_new'),
     path('logoff', views.logoff, name='convidados_new'),
     path('save_selection', views.salvar_selecao, name='salvar_selecao'),
-    path('obrigado', views.obrigado, name='obrigado')
+    path('obrigado', views.obrigado, name='obrigado'),
+    path('convite', views.convite, name='convite')
 ]
