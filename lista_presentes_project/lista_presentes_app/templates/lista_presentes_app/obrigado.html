@@ -1,6 +1,10 @@
 {% extends './base.html' %}
+{% load static %}
 {% block content %}
-  <h1 class="m-2">Obrigado!</h1>
-  <h4 class="m-2">Suas informações foram atualizadas com sucesso.</h4>
+<center>
+  <h1 class="m-2 mb-3">Obrigado!</h1>
+  <img src="{% static 'lista_presentes_app/astronauta_coracao.png' %}" style="height: 150px" />
+  <h4 class="m-2 mt-3">Suas informações foram atualizadas com sucesso.</h4>
   <h4 class="m-2">Até lá!</h4>
+</center>
 {% endblock %}

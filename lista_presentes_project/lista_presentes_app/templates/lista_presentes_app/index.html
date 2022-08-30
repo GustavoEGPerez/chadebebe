@@ -1,31 +1,64 @@
 {% extends './base.html' %}
+{% load static %}
 {% block content %}
+  <style>
+    main.container {
+      background-image: url('{% static 'lista_presentes_app/welcome.png' %}'); 
+      background-repeat: no-repeat;
+      background-position: right top;
+      background-color: white;
+    }
+    #astronauta {
+      display: none
+    }
+    @media only screen and (max-width: 1200px) {
+      main.container {
+        background-image: url('{% static 'lista_presentes_app/welcome_opaque.png' %}') !important; 
+      }
+      #astronauta {
+        display: inline;
+        margin-left: auto;
+        margin-right: auto;
+      }
+    }
+  </style>
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/jquery.maskedinput/1.4.1/jquery.maskedinput.min.js"></script>
-  <h1 class="mb-5" style="text-align: center;">Bem-vindo ao site do chá de bebê do Téo!</h1>
-  <p class="m-5" style="text-align: center;">
-    Neste site você pode escolher qual tamanho de fralda vai levar<br />
-    E se preferir, também poderá escolher mais um presentinho para esse bebezinho lindo que está por vir!
-  </p>
-  <form class="row" method="POST">
-    {% csrf_token %}
-    <div class="col-sm-0 col-md-4"></div>
-    <div class="form col-sm-12 col-md-4">
-      <div class="form-group">
-        <label for="telefone">Informe seu número de telefone:</label>
-        <input type="text" class="form-control item" id="telefone" name="telefone" placeholder="Número de telefone" />
-        <label><small><i>Exemplos: (24) 99999-1234 ou (11) 3333-2222</i></small></label>
-      </div>
+  <div class="col-lg-6 col-xs-12">
 
-      <div class="form-group">
-        <label for="chave">Informe a Chave de Acesso:</label>
-        <input type="text" class="form-control" id="chave" name="chave" placeholder="Chave de acesso" />
+      <div class="row" style="align: center">
+        <div class="col-md-9 col-xs-12 col-lg-12">
+          <h2 class="mb-2" style="text-align: center; color: #030357">Bem-vindo ao site do chá de bebê do Téo!</h2>
+        </div>
+        <div class="col-md-3 col-xs-12 col-lg-0">
+          <center>
+          <img src="{% static 'lista_presentes_app/astronauta_welcome.png' %}" style="height: 60px" class="m-2" id="astronauta" />
+          </center>
+        </div>
       </div>
-      <button type="submit" class="btn btn-primary">Continuar</button>
-      <br><br><br><small><a href="/login">Sou administrador</a></small>
-    </div>
-    <div class="col-sm-0 col-md-4"></div>
-  </form>
+      
+    <form class="row p-1" method="POST" style="background-color: white; border-radius: 15px;">
+      {% csrf_token %}
+      <p class="m-3" style="text-align: left;">
+          Neste site você pode escolher qual tamanho de fralda vai levar<br />
+        E se preferir, também poderá escolher mais um presentinho para esse bebezinho lindo que está por vir!
+      </p>
+      <div class="form col pb-2">
+        <div class="form-group">
+          <label for="telefone">Informe seu número de telefone:</label>
+          <input type="text" class="form-control item" id="telefone" name="telefone" placeholder="Número de telefone" />
+          <label><small><i>Exemplos: (24) 99999-1234 ou (11) 3333-2222</i></small></label>
+        </div>
+
+        <div class="form-group">
+          <label for="chave">Informe a Chave de Acesso:</label>
+          <input type="text" class="form-control" id="chave" name="chave" placeholder="Chave de acesso" />
+        </div>
+        <button type="submit" class="btn btn-primary">Continuar</button>
+        <br><small><a href="/login">Sou administrador</a></small>
+      </div>
+    </form>
+  </div>
   <script type="text/javascript">
     $('#telefone')
       .mask('(99) 9999-9999?9')
