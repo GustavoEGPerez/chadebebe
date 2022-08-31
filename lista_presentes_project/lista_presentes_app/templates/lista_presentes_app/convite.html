@@ -3,7 +3,9 @@
 {% block content %}
 {% if request.user.is_authenticated or request.session.convidado %}
 <div class="row">
-  <img src="{% static 'lista_presentes_app/convite.png' %}" style="width: 100%; max-width: 1500px; text-align:center" />
+  <div class="col-12" style="text-align: center">
+    <img src="{% static 'lista_presentes_app/convite.png' %}" style="width: 100%; max-width: 900px; text-align:center" />
+  </div>
 </div>
 <div class="row m-3 p-2">
   <div class="col-12">
