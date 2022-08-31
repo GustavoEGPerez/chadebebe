@@ -111,6 +111,7 @@ class OpcoesView(generic.ListView):
 
 class PresenteListView(generic.ListView):
     model = Presentes
+    ordering = ['nome']
     
 class PresenteCreateView(generic.CreateView):
     model = Presentes
@@ -127,6 +128,7 @@ class PresenteUpdateView(generic.UpdateView):
     
 class ConvidadoListView(generic.ListView):
     model = Convidados
+    ordering = ['nome']
     
 class ConvidadoCreateView(generic.CreateView):
     model = Convidados
