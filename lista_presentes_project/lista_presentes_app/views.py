@@ -47,6 +47,22 @@ def convite(request):
     response = TemplateResponse(request, 'lista_presentes_app/convite.html', {})
     return response
 
+def convidado_delete(request, id):
+    try: 
+        convidado = Convidados.objects.get(pk=id)
+        convidado.delete()
+        return redirect('/convidados')
+    except Convidados.DoesNotExist:
+        messages.error(request, "Candidato nao existe." )
+
+def presente_delete(request, id):
+    try: 
+        presente = Presentes.objects.get(pk=id)
+        presente.delete()
+        return redirect('/presentes')
+    except Presentes.DoesNotExist:
+        messages.error(request, "Presente nao existe." )
+
 @csrf_exempt
 def logoff(request):
     if request.method == "POST":
@@ -105,7 +121,7 @@ class PresenteUpdateView(generic.UpdateView):
     model = Presentes
     slug_url_kwarg = 'presente_slug'
     slug_field = 'id'
-    fields =('nome', 'quantidade', 'obrigatorio', 'url_imagem', 'url_anuncio')
+    fields =('id', 'nome', 'quantidade', 'obrigatorio', 'url_imagem', 'url_anuncio')
     success_url = "/presentes"
     
     
@@ -121,7 +137,7 @@ class ConvidadoUpdateView(generic.UpdateView):
     model = Convidados
     slug_url_kwarg = 'convidado_slug'
     slug_field = 'id'
-    fields =('nome', 'email', 'telefone')
+    fields =('id', 'nome', 'email', 'telefone')
     success_url = "/convidados"
     
 class ResultadoView(generic.ListView):

@@ -4,7 +4,11 @@
   {% if request.user.is_authenticated %}
     <form action="" method="post">
       {% csrf_token %} {{ form|crispy }}
-      <input type="submit" value="Save" />
+      <input type="submit" value="Salvar" class="btn btn-primary" >
+    </form>
+    <form action="/presentes/{{form.initial.id}}/delete" method="post">
+      {% csrf_token %}
+      <input type="submit" value="Excluir" class="btn btn-primary" >
     </form>
   {% endif %}
 {% endblock %}

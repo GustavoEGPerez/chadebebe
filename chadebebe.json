@@ -1,0 +1,18 @@
+{
+    "apps": [
+        {
+            "name": "chadoteo",
+            "script": "./lista_presentes_project/manage.py",
+            "args": [
+                "runserver",
+                "0.0.0.0:5155"
+            ],
+            "exec_mode": "fork",
+            "instances": "1",
+            "wait_ready": true,
+            "autorestart": true,
+            "max_restarts": 5,
+            "interpreter": "python3"
+        }
+    ]
+}
