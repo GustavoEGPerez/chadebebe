@@ -84,5 +84,26 @@
       </div>
     </fieldset>
   {% endif %}
+    <fieldset id="quem">
+      <h2 class="m-3 mt-5">Convidados que escolheram fraldas/presentes</h2>
+      <div class="container">
+        <div class="row mt-2">
+          <div class="col-12">
+            <table class="table">
+              <tr>
+                <th scope="col">Nome</th>
+              </tr>      
+              {% for convidado in data.quem %}
+                <tr>
+                  <td>
+                    <a href="/convidados/{{ convidado.id_convidado }}">{{ convidado.nome_convidado }}</a>
+                  </td>
+                </tr>
+              {% endfor %}
+            </table>
+          </div>
+        </div>
+      </div>
+    </fieldset>
   {% endif %}
 {% endblock %}

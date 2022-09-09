@@ -43,3 +43,20 @@ class VwResultadosProdutos(models.Model):
     class Meta:
         managed = False
         db_table = 'vw_resultado_produtos'
+
+class VwResultados(models.Model):
+    id_presente = models.IntegerField()
+    nome_presente = models.CharField(max_length=50)
+    quantidade_presente = models.IntegerField()
+    quantidade_selecionada = models.IntegerField()
+    total_selecionado = models.IntegerField()
+    qtde_restante = models.IntegerField()
+    url_imagem = models.TextField(max_length=512, blank=True, null=True)
+    id_convidado = models.IntegerField()
+    nome_convidado = models.CharField(max_length=50)
+    email_convidado = models.CharField(max_length=50)
+    telefone_convidado = models.CharField(max_length=50)
+
+    class Meta:
+        managed = False
+        db_table = 'resultados'

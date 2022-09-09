@@ -2,7 +2,7 @@ from django.forms.models import model_to_dict
 from django.views import generic
 from django.template.response import TemplateResponse
 from django.contrib import messages
-from lista_presentes_app.models import Convidados, Presentes, PresentesConvidados, VwResultadosProdutos
+from lista_presentes_app.models import Convidados, Presentes, PresentesConvidados, VwResultados, VwResultadosProdutos
 from django.shortcuts import redirect
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse, HttpResponseRedirect
@@ -148,7 +148,8 @@ class ResultadoView(generic.ListView):
     def get_queryset(self):
         return {
             "obrigatorios": VwResultadosProdutos.objects.filter(obrigatorio=True).order_by('-qtde_selecionada'),
-            "opcionais": VwResultadosProdutos.objects.filter(obrigatorio=False).order_by('-qtde_selecionada')
+            "opcionais": VwResultadosProdutos.objects.filter(obrigatorio=False).order_by('-qtde_selecionada'),
+            "quem": VwResultados.objects.distinct('id_convidado', 'nome_convidado').order_by('nome_convidado')
         }
 
 
